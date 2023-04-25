@@ -9,11 +9,11 @@ CSE 15L
 >
 ___
 Welcome to read my cse15l lab report 2.
-___
+>
 # Part1 Implementing StringServer
 >
 The following code is the StringServer which is a webserver that will accept path as the following format `/add-message?s=<string>` and it will typically show the string of the path in the web server page.
->
+___
 ```
 import java.io.IOException;
 import java.net.URI;
@@ -86,6 +86,7 @@ public class StringServer {
 
 }
 ```
+___
 >
 This is similar to the one we have done on lab2 about number server. However, I tried to add some helper methods to help me better build up the Handler for string server.By running the command `javac StringServer.java` and `java StringServer 4688`. Now the system will return me a webpage which will look exactly as the following.
 ![empty](emptypage.png)
