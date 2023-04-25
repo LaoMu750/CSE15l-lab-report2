@@ -89,3 +89,99 @@ This is similar to the one we have done on lab2 about number server. However, I 
 ![empty](emptypage.png)
 Now the first string path I have tried is `/add-message?s=Hello` and the page would show as the following page which is showing a string word Hello in the page.
 ![Hello](hellopage.png)
+The url is `http://localhost:4688/add-message?s=Hello`. Typically, the method handlerequest in the class handler is called with an URI object as an argument to parse in. The method will call two helper methods to get the string field of the path of the url and add it to the page.
+>
+The second string path i have tried is `/add-message?s=How are you` and it shows as the following screenshot.
+![image](howpage.png)
+The method handler.handlerequest(URI url) is called by parsing in the url `http://localhost:4688/add-message?s=How%20are%20you` and typically the argument is an URI object and it will return the string field in the method.
+
+# Part 2 Junit Test
+The buggy program function is inside the ArrayExample.java which is the AverageWithoutLowest method.
+## Failing test
+```
+@Test 
+  public void testAverageWithoutLowest()
+  {
+      double[] arr ={3.0,3.0,3.0};
+      assertEquals(3.0,ArrayExamples.averageWithoutLowest(arr),0.00001);
+  }
+ ```
+ The above unit test will fail the method.
+## output
+![image](jtest1.png)
+ ```
+ [cs15lsp23ok@ieng6-202]:lab3:56$ java -cp .:lib/hamcrest-core-1.3.jar:lib/junit-4.13.2.jar org.junit.runner.JUnitCore ArrayTests
+JUnit version 4.13.2
+.E..
+Time: 0.017
+There was 1 failure:
+1) testAverageWithoutLowest(ArrayTests)
+java.lang.AssertionError: expected:<3.0> but was:<0.0>
+        at org.junit.Assert.fail(Assert.java:89)
+        at org.junit.Assert.failNotEquals(Assert.java:835)
+        at org.junit.Assert.assertEquals(Assert.java:555)
+        at org.junit.Assert.assertEquals(Assert.java:685)
+        at ArrayTests.testAverageWithoutLowest(ArrayTests.java:22)
+
+FAILURES!!!
+Tests run: 3,  Failures: 1
+```
+## passing test
+```
+@Test
+  public void testAverageWithoutLowest1()
+  {
+      double[] arr ={1.0,3.0,2.0};
+      assertEquals(2.5,ArrayExamples.averageWithoutLowest(arr),0.00001);
+  }
+ ```
+ ## Passing output
+ ![image](jtest2.png)
+ 
+ ## Code before change
+ ```
+ // Averages the numbers in the array (takes the mean), but leaves out the
+  // lowest number when calculating. Returns 0 if there are no elements or just
+  // 1 element in the array
+  static double averageWithoutLowest(double[] arr) {
+    if(arr.length < 2) { return 0.0; }
+    double lowest = arr[0];
+    for(double num: arr) {
+      if(num < lowest) { lowest = num; }
+    }
+    double sum = 0;
+    for(double num: arr) {
+      if(num != lowest) { sum += num; }
+    }
+    return sum / (arr.length - 1);
+  }
+  ```
+  ## Code after change
+  ```
+   // Averages the numbers in the array (takes the mean), but leaves out the
+  // lowest number when calculating. Returns 0 if there are no elements or just
+  // 1 element in the array
+  static double averageWithoutLowest(double[] arr) {
+    if(arr.length < 2) { return 0.0; }
+    int index=0;
+    double lowest = arr[0];
+    for(int i=1;i<arr.length;i++){
+        if(arr[i]<lowest){
+            index = i
+         }
+    }
+    double sum = 0;
+    for(int i=0;i<arr.length;i++){
+        if(i!=index)
+        {
+            sum+= arr[i];
+        }
+    }
+    return sum / (arr.length - 1);
+  }
+  ```
+Basically, the code before change will not work if all elements are the same as lowest. However, I changed this issue by setting the lowest element index and basically sum up skipping that particular index will return the correct sum and return the correct average.
+
+# Part3
+Something that I learn from lab2 is to build up web server. Indeed, I have never tried to build a web server by myself. After that lab, I found that build any kind of web server is pretty fun and useful. For lab3, I have learned that how to use Junit test for testing the java program in order to make my own program work correctly for each function.
+>
